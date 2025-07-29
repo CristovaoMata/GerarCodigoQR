@@ -23,18 +23,17 @@ namespace GerarCodigoQR.UI
             };
 
             AlunoDAL dal = new AlunoDAL();
-            int idGerado = dal.Inserir(aluno);
+            int id = dal.Inserir(aluno);
 
+            string textoQR = $"AlunoID:{id}|Nome:{aluno.Nome}|Matricula:{aluno.Matricula}";
             QRCodeService qrService = new QRCodeService();
-            string textoQR = $"AlunoID:{idGerado}|Nome:{aluno.Nome}|Matricula:{aluno.Matricula}";
-            string caminhoQR = qrService.GerarQRCode(textoQR, "qr_" + idGerado);
+            string caminhoQR;
+            Image imagemQR = qrService.GerarQRCodeComLogo(textoQR, out caminhoQR, margem: 2, corQRCode: Color.FromArgb(0, 132, 176));
 
-            dal.AtualizarCaminhoQRCode(idGerado, caminhoQR);
+            dal.AtualizarCaminhoQRCode(id, caminhoQR);
+            picQRCode.Image = imagemQR;
 
-            // Mostrar QR no PictureBox
-            picQRCode.Image = Image.FromFile(caminhoQR);
-
-            MessageBox.Show("Aluno cadastrado e QR Code gerado com sucesso.");
+            MessageBox.Show("Aluno cadastrado com QR personalizado.");
         }
     }
 }
