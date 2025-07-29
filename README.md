@@ -1,0 +1,1 @@
+# GerarCodigoQR
